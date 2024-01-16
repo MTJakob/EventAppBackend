@@ -2,3 +2,4 @@
 .env
 .flaskenv
 resources/TestFunctions.py
+result.json
