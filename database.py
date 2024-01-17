@@ -59,7 +59,7 @@ class Event(db.Model):
     Name = db.Column(db.String(255), nullable=False)
     StartEndDateTime = db.Column(DateTimeRangeType)
     Capacity = db.Column(db.Integer)
-    Price = db.Column(db.Integer)
+    Price = db.Column(db.Float)
     IDOrganiser = db.Column(db.Integer, db.ForeignKey(User.IDUser))
     eventUser = db.relationship('User', back_populates='userEvent', lazy=True)
     IDAddress = db.Column(db.Integer, db.ForeignKey(Address.IDAddress))
