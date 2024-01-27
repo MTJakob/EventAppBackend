@@ -5,6 +5,7 @@ from database import db
 from resources.Event import blp as EventBlueprint
 from resources.User import blp as UserBlueprint
 from resources.Login import blp as LoginBlueprint
+from resources.Register import blp as RegisterBlueprint
 import os
 
 
@@ -33,6 +34,7 @@ def create_app(db_url=None):
     api.register_blueprint(EventBlueprint)
     api.register_blueprint(UserBlueprint)
     api.register_blueprint(LoginBlueprint)
+    api.register_blueprint(RegisterBlueprint)
 
     return app
 
