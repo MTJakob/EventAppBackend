@@ -21,5 +21,6 @@ class User(MethodView):
         if crypt_context.verify(user_data["Password"], user.Password):
             access_token = create_access_token(identity=user.IDUser)
             return {"message": "User logged in successfully",
+                    "user_id": user.IDUser,
                     "access_token": access_token}, 200
         abort(401, message="Invalid email or password.")
