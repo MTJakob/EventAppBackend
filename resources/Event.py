@@ -53,6 +53,6 @@ class Event(MethodView):
         return data, 200
 
     @blp.arguments(EventDeleteSchema)
-    def delete(self):
+    def delete(self, user_data, user_id):
 
-        return "OK"
+        return {"message": "Event deleted successfully"}, 200
