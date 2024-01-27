@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import EmailType, PasswordType, force_auto_coercion
+from sqlalchemy_utils import EmailType
 import datetime
 
 db = SQLAlchemy()
@@ -18,9 +18,6 @@ class Address(db.Model):
                f"Latitude: {self.Latitude}, Street Name: {self.StreetName}, Building Number: {self.BuildingNumber}" \
                f"Flat Number {self.FlatNumber}, CityName: {self.CityName}, Province: {self.Province}, " \
                f"Country: {self.Country}"
-
-
-#force_auto_coercion()
 
 
 class User(db.Model):
@@ -56,7 +53,7 @@ class Event(db.Model):
     Name = db.Column(db.String(255), nullable=False)
     StartDateTime = db.Column(db.DateTime)
     EndDateTime = db.Column(db.DateTime)
-    Capacity = db.Column(db.Integer)
+    Capacity = db.Column(db.Integer(), unique=False,)
     Price = db.Column(db.Float(precision=2), unique=False,)
     IDOrganiser = db.Column(db.Integer, db.ForeignKey(User.IDUser))
     eventUser = db.relationship('User', back_populates='userEvent', lazy=True)
