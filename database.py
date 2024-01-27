@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import EmailType, PasswordType, ArrowType, DateTimeRangeType
+from sqlalchemy_utils import EmailType, PasswordType, force_auto_coercion
 import datetime
 
 db = SQLAlchemy()
@@ -10,12 +10,6 @@ class Address(db.Model):
     Name = db.Column(db.String(255), nullable=False)
     Longitude = db.Column(db.Float, nullable=False)
     Latitude = db.Column(db.Float, nullable=False)
-    StreetName = db.Column(db.String(63))
-    BuildingNumber = db.Column(db.Integer)
-    FlatNumber = db.Column(db.Integer)
-    CityName = db.Column(db.String(63))
-    Province = db.Column(db.String(63))
-    Country = db.Column(db.String(63))
     addressUser = db.relationship('User', back_populates='userAddress', lazy=True)
     addressEvent = db.relationship('Event', back_populates='eventAddress', lazy=True)
 
@@ -26,13 +20,16 @@ class Address(db.Model):
                f"Country: {self.Country}"
 
 
+#force_auto_coercion()
+
+
 class User(db.Model):
     IDUser = db.Column(db.Integer, primary_key=True, nullable=False)
     Email = db.Column(EmailType, nullable=False, unique=True)
-    Password = db.Column(PasswordType, nullable=False)
+    Password = db.Column(db.String(), nullable=False)
     Name = db.Column(db.String(63), nullable=False)
     Surname = db.Column(db.String(63), nullable=False)
-    DateOfBirth = db.Column(ArrowType)
+    DateOfBirth = db.Column(db.DateTime)
     IDAddress = db.Column(db.Integer, db.ForeignKey(Address.IDAddress))
     userAddress = db.relationship('Address', back_populates='addressUser', lazy=True)
     userEventParticipant = db.relationship('EventParticipant', back_populates='eventParticipantUser', lazy=True)
@@ -57,9 +54,10 @@ class Category(db.Model):
 class Event(db.Model):
     IDEvent = db.Column(db.Integer, primary_key=True, nullable=False)
     Name = db.Column(db.String(255), nullable=False)
-    StartEndDateTime = db.Column(DateTimeRangeType)
+    StartDateTime = db.Column(db.DateTime)
+    EndDateTime = db.Column(db.DateTime)
     Capacity = db.Column(db.Integer)
-    Price = db.Column(db.Float)
+    Price = db.Column(db.Float(precision=2), unique=False,)
     IDOrganiser = db.Column(db.Integer, db.ForeignKey(User.IDUser))
     eventUser = db.relationship('User', back_populates='userEvent', lazy=True)
     IDAddress = db.Column(db.Integer, db.ForeignKey(Address.IDAddress))
