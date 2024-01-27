@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_smorest import Api
+from flask_jwt_extended import JWTManager
 from database import db
 from resources.Event import blp as EventBlueprint
-from resources.TestFunctions import blp as TestBlueprint
+from resources.User import blp as UserBlueprint
+from resources.Login import blp as LoginBlueprint
 import os
 
 
@@ -17,15 +19,20 @@ def create_app(db_url=None):
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     # disable for development purpose, should be switched on production env
-    # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS", False)
     db.init_app(app)
     api = Api(app)
+
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "test")
+    # test on production is going to be str(secrets.SystemRandom().getrandbits(128))
+    jwt = JWTManager(app)
 
     with app.app_context():
         db.create_all()
 
     api.register_blueprint(EventBlueprint)
-    api.register_blueprint(TestBlueprint)
+    api.register_blueprint(UserBlueprint)
+    api.register_blueprint(LoginBlueprint)
 
     return app
 
