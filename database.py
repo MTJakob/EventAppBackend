@@ -7,7 +7,7 @@ db = SQLAlchemy()
 
 class Address(db.Model):
     IDAddress = db.Column(db.Integer, primary_key=True, nullable=False)
-    Name = db.Column(db.String(255), nullable=False)
+    Name = db.Column(db.String(255))
     Longitude = db.Column(db.Float, nullable=False)
     Latitude = db.Column(db.Float, nullable=False)
     addressUser = db.relationship('User', back_populates='userAddress', lazy=True)
