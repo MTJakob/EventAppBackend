@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields
+from schemas.PlainSchemas import PlainUserSchema, PlainCategorySchema, PlainEventSchema, PlainAddressSchema
 
 
 class EventGetSchema(Schema):
@@ -25,7 +26,15 @@ class EventPostSchema(Schema):
     StartDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S', required=True)
     EndDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S', required=True)
     Capacity = fields.Integer()
+    # eventCategory = fields.Nested(PlainUserSchema(), dump_only=True)
+    # eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
 
 
 class EventDeleteSchema(Schema):
     IDEvent = fields.Integer(required=True)
+
+
+class EventGetSchema(PlainEventSchema):
+    eventOrganiser = fields.Nested(PlainUserSchema(exclude=("Email", "DateOfBirth",)), dump_only=True)
+    eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
+    eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")), dump_only=True)
