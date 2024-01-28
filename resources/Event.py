@@ -1,6 +1,6 @@
 from flask_restful import abort
 from flask.views import MethodView
-from database import db, User, Event as EventTable
+from database import db, User, Event as EventTable, Address
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_smorest import Blueprint, abort
 from schemas.PlainSchemas import EventSchema
@@ -16,21 +16,39 @@ class Event(MethodView):
 
     @blp.arguments(EventPostSchema)
     def post(self, user_data, user_id):
+
+        address = Address \
+        (Longitude=user_data["Name"],
+        Latitude=user_data["Name"]
+        )
+
+        try:
+            db.session.add(address)
+            db.session.flush()
+        except IntegrityError:
+            abort(400, message="Submitted event cannot be added due to lack of data integrity")
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while inserting the event.")
+
         event = EventTable \
         (Name=user_data["Name"],
          Price=user_data["Price"],
          StartDateTime=user_data["StartDateTime"],
          EndDateTime=user_data["EndDateTime"],
          Capacity=user_data["Capacity"],
-         IDOrganiser=user_id
+         IDOrganiser=user_id,
+         IDAddress=address.IDAddress
          )
+
         try:
             db.session.add(event)
+            db.session.flush()
             db.session.commit()
         except IntegrityError:
             abort(400, message="Submitted event cannot be added due to lack of data integrity")
         except SQLAlchemyError:
             abort(500, message="An error occurred while inserting the event.")
+
         return {"message": "Event created successfully"}, 201
 
     @blp.response(200, EventSchema)

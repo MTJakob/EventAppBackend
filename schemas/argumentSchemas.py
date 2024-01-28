@@ -23,11 +23,11 @@ class RegisterSchema(Schema):
 class EventPostSchema(Schema):
     Name = fields.Str(required=True)
     Price = fields.Float()
-    StartDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S', required=True)
-    EndDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S', required=True)
+    StartDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S')
+    EndDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S')
     Capacity = fields.Integer()
-    # eventCategory = fields.Nested(PlainUserSchema(), dump_only=True)
-    # eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
+    eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
+    eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")), dump_only=True)
 
 
 class EventDeleteSchema(Schema):
