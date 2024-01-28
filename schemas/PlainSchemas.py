@@ -9,7 +9,7 @@ class PlainAddressSchema(Schema):
 
 
 class PlainUserSchema(Schema):
-    IDUser = fields.Integer()
+    IDUser = fields.Integer(dump_only=True)
     Email = fields.Email()
     Name = fields.Str()
     Surname = fields.Str()
