@@ -18,8 +18,9 @@ class Event(MethodView):
     def post(self, user_data, user_id):
 
         address = Address \
-        (Longitude=user_data["Name"],
-        Latitude=user_data["Name"]
+        (
+        Longitude=user_data["eventAddress"]["Longitude"],
+        Latitude=user_data["eventAddress"]["Latitude"]
         )
 
         try:
@@ -28,7 +29,7 @@ class Event(MethodView):
         except IntegrityError:
             abort(400, message="Submitted event cannot be added due to lack of data integrity")
         except SQLAlchemyError:
-            abort(500, message="An error occurred while inserting the event.")
+            abort(500, message="An error occurred while inserting the address.")
 
         event = EventTable \
         (Name=user_data["Name"],
