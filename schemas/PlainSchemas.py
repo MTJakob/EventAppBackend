@@ -54,12 +54,7 @@ class PlainPermissionSchema(Schema):
 
 
 class EventSchema(PlainEventSchema):
+    IDOrganiser = fields.Integer()
     eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
     eventAddress = fields.Nested(PlainAddressSchema(), dump_only=True)
-    #eventParticipantEventFrom = fields.List(fields.Nested(PlainEventParticipantSchema()), dump_only=True)
-
-
-class AddressSchema(PlainAddressSchema):
-    addressUser = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
-    addressEvent = fields.Nested(PlainAddressSchema(), dump_only=True)
     #eventParticipantEventFrom = fields.List(fields.Nested(PlainEventParticipantSchema()), dump_only=True)
