@@ -20,7 +20,7 @@ class RegisterSchema(Schema):
     Password = fields.Str(required=True, load_only=True)
 
 
-class EventPostSchema(PlainUserSchema):
+class EventPostSchema(PlainEventSchema):
     eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)))
     eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")))
 

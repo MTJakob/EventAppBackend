@@ -2,7 +2,7 @@ from marshmallow import Schema, fields
 
 
 class PlainAddressSchema(Schema):
-    IDAddress = fields.Integer()
+    IDAddress = fields.Integer(dump_only=True)
     Name = fields.Str()
     Longitude = fields.Float()
     Latitude = fields.Float()
@@ -23,7 +23,7 @@ class PlainCategorySchema(Schema):
 
 
 class PlainEventSchema(Schema):
-    IDEvent = fields.Integer()
+    IDEvent = fields.Integer(dump_only=True)
     Name = fields.Str(required=True)
     Price = fields.Float()
     StartDateTime = fields.DateTime('%Y-%m-%dT%H:%M:%S')
