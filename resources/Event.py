@@ -33,26 +33,25 @@ class Event(MethodView):
             abort(500, message="An error occurred while inserting the event.")
         return {"message": "Event created successfully"}, 201
 
-    #@blp.response(200, AddressSchema(many=True))
+    @blp.response(200, EventSchema)
     def put(self):
-        p = EventTable(Name='TestEventIDCategory0', Capacity=60,
-                       StartDateTime=datetime.now(),
-                       EndDateTime=datetime.now(),
-                       Price=40.0, IDCategory=0)
-        #p = Category(Name="Sporty i Rekreacje")
+
+        return "OK", 201
+
+    @blp.response(200, EventGetSchema(many=True))
+    def get(self, user_id):
+        events = EventTable.query.all()  # .filter(EventParticipant.IDUser == user_id)
+        return events, 200
+
+    @blp.arguments(EventDeleteSchema)
+    @blp.alt_response(404, description="Event with that ID not found")
+    def delete(self, user_data, user_id):
+        event = EventTable.query.get_or_404(user_data["IDEvent"])
+        if event.IDOrganiser != int(user_id):
+            abort(403, message="Only organiser can delete the event")
         try:
-            db.session.add(p)
+            db.session.delete(event)
             db.session.commit()
         except SQLAlchemyError:
             abort(500, message="An error occurred while inserting the item.")
-        return "OK", 201
-
-    @blp.response(200, EventSchema(many=True))
-    def get(self, user_id):
-        data = EventTable.query.all()  # .filter(EventParticipant.IDUser == user_id)
-        return data, 200
-
-    @blp.arguments(EventDeleteSchema)
-    def delete(self, user_data, user_id):
-
-        return {"message": "Event deleted successfully"}, 200
+        return {"message": "Event deleted successfully"}, 202
