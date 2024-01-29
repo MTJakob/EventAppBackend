@@ -5,7 +5,7 @@ from database import db, User, EventParticipant as EventParticipantTable, Event
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy import and_
 from flask_smorest import Blueprint, abort
-from schemas.argumentSchemas import EventParticipantDeletePostSchema
+from schemas.argumentSchemas import EventParticipantPostSchema, EventParticipantDeleteSchema
 from schemas.responseSchemas import EventGetSchema
 from datetime import datetime
 
@@ -15,7 +15,7 @@ blp = Blueprint("EventParticipant", __name__, description="Operations on event p
 @blp.route('/event participant/<string:user_id>')
 class EventParticipant(MethodView):
 
-    @blp.arguments(EventParticipantDeletePostSchema)
+    @blp.arguments(EventParticipantPostSchema)
     def post(self, user_data, user_id):
         Event.query.get_or_404(user_data["IDEvent"])
         User.query.get_or_404(user_id)
@@ -38,7 +38,7 @@ class EventParticipant(MethodView):
         events = Event.query.filter(EventParticipantTable.IDUser == int(user_id))
         return events, 200
 
-    @blp.arguments(EventParticipantDeletePostSchema)
+    @blp.arguments(EventParticipantDeleteSchema)
     def delete(self, user_data, user_id):
         event_participant = EventParticipantTable.query.one_or_404(
             and_(EventParticipantTable.IDEvent == user_data["IDEvent"],
