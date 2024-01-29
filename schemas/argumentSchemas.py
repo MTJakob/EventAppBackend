@@ -26,6 +26,7 @@ class EventPostSchema(PlainEventSchema):
 
 
 class EventPutSchema(PlainEventSchema):
+    IDEvent = fields.Integer(required=True)
     eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)))
     eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")))
 
