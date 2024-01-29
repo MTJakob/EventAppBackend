@@ -71,9 +71,11 @@ class Event(db.Model):
 
 class EventParticipant(db.Model):
     IDUser = db.Column(db.Integer, db.ForeignKey(User.IDUser), primary_key=True, nullable=False)
-    eventParticipantUser = db.relationship('User', back_populates='userEventParticipant', lazy=True)
+    eventParticipantUser = db.relationship('User', back_populates='userEventParticipant',
+                                           lazy=True, cascade="all, delete")
     IDEvent = db.Column(db.Integer, db.ForeignKey(Event.IDEvent), primary_key=True, nullable=False)
-    eventParticipantEventTo = db.relationship('Event', back_populates='eventParticipantEventFrom', lazy=True)
+    eventParticipantEventTo = db.relationship('Event', back_populates='eventParticipantEventFrom',
+                                              lazy=True, cascade="all, delete")
     Review = db.Column(db.Integer)
 
     def __repr__(self):
