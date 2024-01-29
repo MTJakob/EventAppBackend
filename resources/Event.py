@@ -20,7 +20,6 @@ class Event(MethodView):
         #category = Category.query.filter(Category.Name == user_data["eventCategory"]["Name"])
         address = Address \
         (
-        Name="proso je swinia", # do usuniecia!!!!
         Longitude=user_data["eventAddress"]["Longitude"],
         Latitude=user_data["eventAddress"]["Latitude"]
         )
