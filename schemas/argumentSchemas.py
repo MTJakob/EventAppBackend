@@ -12,6 +12,12 @@ class LoginSchema(Schema):
     Password = fields.Str(required=True, load_only=True)
 
 
+class ChangePasswordSchema(Schema):
+    IDUser = fields.Integer(required=True)
+    OldPassword = fields.Str(required=True, load_only=True)
+    NewPassword = fields.Str(required=True, load_only=True)
+
+
 class RegisterSchema(Schema):
     Email = fields.Email(required=True)
     Name = fields.Str(required=True)
