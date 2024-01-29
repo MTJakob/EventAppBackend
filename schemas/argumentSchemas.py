@@ -25,11 +25,14 @@ class EventPostSchema(PlainEventSchema):
     eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")))
 
 
+class EventPutSchema(PlainEventSchema):
+    eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)))
+    eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")))
+
+
 class EventDeleteSchema(Schema):
     IDEvent = fields.Integer(required=True)
 
 
-class EventGetSchema(PlainEventSchema):
-    eventOrganiser = fields.Nested(PlainUserSchema(exclude=("Email", "DateOfBirth",)), dump_only=True)
-    eventCategory = fields.Nested(PlainCategorySchema(only=("Name",)), dump_only=True)
-    eventAddress = fields.Nested(PlainAddressSchema(exclude=("IDAddress", "Name")), dump_only=True)
+class EventParticipantDeleteSchema(Schema):
+    IDEvent = fields.Integer(required=True)
