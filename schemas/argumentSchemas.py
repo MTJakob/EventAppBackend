@@ -34,5 +34,5 @@ class EventDeleteSchema(Schema):
     IDEvent = fields.Integer(required=True)
 
 
-class EventParticipantDeleteSchema(Schema):
+class EventParticipantDeletePostSchema(Schema):
     IDEvent = fields.Integer(required=True)

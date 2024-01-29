@@ -32,8 +32,8 @@ class PlainEventSchema(Schema):
 
 
 class PlainEventParticipantSchema(Schema):
-    IDUser = fields.Integer()
-    IDEvent = fields.Integer()
+    IDUser = fields.Integer(required=True)
+    IDEvent = fields.Integer(required=True)
     Review = fields.Integer()
 
 
