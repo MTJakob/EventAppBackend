@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy import and_
 from flask_smorest import Blueprint, abort
 from schemas.argumentSchemas import EventParticipantDeletePostSchema
+from schemas.responseSchemas import EventGetSchema
 from datetime import datetime
 
 blp = Blueprint("EventParticipant", __name__, description="Operations on event participants")
@@ -17,12 +18,12 @@ class EventParticipant(MethodView):
     @blp.arguments(EventParticipantDeletePostSchema)
     def post(self, user_data, user_id):
         Event.query.get_or_404(user_data["IDEvent"])
-        User.query.get_or_404(int(user_id))
+        User.query.get_or_404(user_id)
 
         event_participant = EventParticipantTable \
         (IDUser=user_id,
-        IDEvent=user_data["IDEvent"]
-        )
+         IDEvent=user_data["IDEvent"]
+         )
         try:
             db.session.add(event_participant)
             db.session.commit()
@@ -32,18 +33,19 @@ class EventParticipant(MethodView):
             abort(500, message="An error occurred while inserting the address.")
         return "EventParticipant has been successfully registered"
 
-    @blp.response(200)
-    def get(self):
-        return "OK"
+    @blp.response(200, EventGetSchema(many=True))
+    def get(self, user_id):
+        events = Event.query.filter(EventParticipantTable.IDUser == int(user_id))
+        return events, 200
 
     @blp.arguments(EventParticipantDeletePostSchema)
     def delete(self, user_data, user_id):
         event_participant = EventParticipantTable.query.one_or_404(
             and_(EventParticipantTable.IDEvent == user_data["IDEvent"],
-                 EventParticipantTable.IDUser == user_id))
-        try:
-            db.session.delete(event_participant)
-            db.session.commit()
-        except SQLAlchemyError:
-            abort(500, message="An error occurred while unsubscribing form the event.")
+                 EventParticipantTable.IDUser == int(user_id)))
+        #try:
+        db.session.delete(event_participant)
+        db.session.commit()
+        #except SQLAlchemyError:
+        #    abort(500, message="An error occurred while unsubscribing form the event.")
         return {"message": "Participant successfully unsubscribed from the event."}, 202
