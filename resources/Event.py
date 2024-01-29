@@ -59,7 +59,6 @@ class Event(MethodView):
 
         address = Address \
         (
-        Name="proso je swinia", # do usuniecia!!!!
         Longitude=user_data["eventAddress"]["Longitude"],
         Latitude=user_data["eventAddress"]["Latitude"]
         )
