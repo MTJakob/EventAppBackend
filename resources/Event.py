@@ -1,10 +1,12 @@
 from flask_restful import abort
 from flask.views import MethodView
-from database import db, Event as EventTable, Address, Category
+from database import db, Event as EventTable, Address, Category as CategoryTable
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_smorest import Blueprint, abort
 from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema
 from schemas.responseSchemas import EventGetSchema
+import json
+from addCategoryScript import add_categories_to_database
 
 blp = Blueprint("Event", __name__, description="Operations on events")
 
@@ -15,7 +17,7 @@ class Event(MethodView):
     @blp.arguments(EventPostSchema)
     def post(self, user_data, user_id):
 
-        category = Category.query.filter_by(Category.Name == user_data["eventCategory"]["Name"]).one_or_404()
+        category = CategoryTable.query.filter_by(CategoryTable.Name == user_data["eventCategory"]["Name"]).one_or_404()
 
         address = Address \
         (
@@ -60,7 +62,7 @@ class Event(MethodView):
         if event.IDOrganiser != int(user_id):
             abort(403, message="Only organiser can alter the event")
 
-        category = Category.query.filter(Category.Name == user_data["eventCategory"]["Name"])
+        category = CategoryTable.query.filter(CategoryTable.Name == user_data["eventCategory"]["Name"])
 
         event.Name = user_data["Name"]
         event.Price = user_data["Price"]
@@ -100,3 +102,37 @@ class Event(MethodView):
         except SQLAlchemyError:
             abort(500, message="An error occurred while deleting the event.")
         return {"message": "Event deleted successfully"}, 202
+
+
+@blp.route('/category')
+class Category(MethodView):
+
+    def post(self):
+
+        f = open('categoryTree.json')
+
+        categories = json.load(f)
+
+        for i in categories:
+            category = CategoryTable \
+                (IDCategory=i["IDCategory"],
+                 Name=i["Name"],
+                 IDCategoryParent=i["IDCategoryParent"]
+                 )
+
+            try:
+                db.session.add(category)
+            except IntegrityError:
+                abort(400, message="Submitted address cannot be added due to lack of data integrity")
+            except SQLAlchemyError:
+                abort(500, message="An error occurred while inserting the address.")
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            abort(400, message="Submitted address cannot be added due to lack of data integrity")
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while inserting the address.")
+
+        f.close()
+        return "Categories are added to the database"
