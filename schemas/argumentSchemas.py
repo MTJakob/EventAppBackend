@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields
-from schemas.PlainSchemas import PlainUserSchema, PlainCategorySchema, PlainEventSchema, PlainAddressSchema
+from schemas.PlainSchemas import PlainCategorySchema, PlainEventSchema, PlainAddressSchema
 
 
 class EventGetSchema(Schema):
