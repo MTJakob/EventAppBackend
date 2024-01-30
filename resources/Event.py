@@ -56,12 +56,12 @@ class Event(MethodView):
     @blp.arguments(EventPutSchema)
     def put(self, user_data, user_id):
 
-        event = EventTable.query.filter(IDEvent=user_data["IDEvent"]).one_or_404()
+        event = EventTable.query.filter_by(IDEvent=user_data["IDEvent"]).one_or_404()
 
         if event.IDOrganiser != int(user_id):
             abort(403, message="Only organiser can alter the event")
 
-        category = CategoryTable.query.filter(Name=user_data["eventCategory"]["Name"]).one_or_404()
+        category = CategoryTable.query.filter_by(Name=user_data["eventCategory"]["Name"]).one_or_404()
 
         event.Name = user_data["Name"]
         event.Price = user_data["Price"]
