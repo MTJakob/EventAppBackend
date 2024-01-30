@@ -38,9 +38,9 @@ class EventParticipant(MethodView):
 
     @blp.arguments(EventParticipantDeleteSchema)
     def delete(self, user_data, user_id):
-        event_participant = EventParticipantTable.query.one_or_404(
+        event_participant = EventParticipantTable.query.filter_by(
             and_(EventParticipantTable.IDEvent == user_data["IDEvent"],
-                 EventParticipantTable.IDUser == int(user_id)))
+                 EventParticipantTable.IDUser == int(user_id))).one_or_404()
         try:
             db.session.delete(event_participant)
             db.session.commit()
