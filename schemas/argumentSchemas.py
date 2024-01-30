@@ -47,3 +47,8 @@ class EventParticipantDeleteSchema(Schema):
 
 class EventParticipantPostSchema(Schema):
     IDEvent = fields.Integer(required=True)
+
+
+class SearchPostSchema(Schema):
+    SearchWord = fields.Str()
+    Name = fields.Str()
