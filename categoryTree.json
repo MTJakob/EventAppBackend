@@ -1,0 +1,267 @@
+[
+  {
+    "IDCategory": 100,
+    "Name": "Sport",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 101,
+    "Name": "Motorsports",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 102,
+    "Name": "Match",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 103,
+    "Name": "Soccer",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 104,
+    "Name": "Tennis",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 105,
+    "Name": "Baseball",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 106,
+    "Name": "Volleyball",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 107,
+    "Name": "Football",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 108,
+    "Name": "Handball",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 109,
+    "Name": "Cycling",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 110,
+    "Name": "Running",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 111,
+    "Name": "Golf",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 112,
+    "Name": "IceSkating",
+    "IDCategoryParent": 100
+  },
+  {
+    "IDCategory": 150,
+    "Name": "Swimming",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 151,
+    "Name": "Diving",
+    "IDCategoryParent": 150
+  },
+  {
+    "IDCategory": 152,
+    "Name": "Sailing",
+    "IDCategoryParent": 150
+  },
+  {
+    "IDCategory": 153,
+    "Name": "Kayaking",
+    "IDCategoryParent": 150
+  },
+  {
+    "IDCategory": 154,
+    "Name": "Surfing",
+    "IDCategoryParent": 150
+  },
+  {
+    "IDCategory": 200,
+    "Name": "Outdoor",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 201,
+    "Name": "Campfire",
+    "IDCategoryParent": 200
+  },
+  {
+    "IDCategory": 202,
+    "Name": "Camping",
+    "IDCategoryParent": 200
+  },
+  {
+    "IDCategory": 203,
+    "Name": "Hiking",
+    "IDCategoryParent": 200
+  },
+  {
+    "IDCategory": 300,
+    "Name": "Art",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 301,
+    "Name": "Photography",
+    "IDCategoryParent": 300
+  },
+  {
+    "IDCategory": 302,
+    "Name": "Movie",
+    "IDCategoryParent": 300
+  },
+  {
+    "IDCategory": 303,
+    "Name": "Theatre",
+    "IDCategoryParent": 300
+  },
+  {
+    "IDCategory": 304,
+    "Name": "Music",
+    "IDCategoryParent": 300
+  },
+  {
+    "IDCategory": 400,
+    "Name": "Event",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 401,
+    "Name": "Birthday",
+    "IDCategoryParent": 400
+  },
+  {
+    "IDCategory": 402,
+    "Name": "Grill",
+    "IDCategoryParent": 400
+  },
+  {
+    "IDCategory": 403,
+    "Name": "Meetup",
+    "IDCategoryParent": 400
+  },
+  {
+    "IDCategory": 404,
+    "Name": "Party",
+    "IDCategoryParent": 400
+  },
+  {
+    "IDCategory": 500,
+    "Name": "Fair",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 501,
+    "Name": "Science",
+    "IDCategoryParent": 500
+  },
+  {
+    "IDCategory": 502,
+    "Name": "Market",
+    "IDCategoryParent": 500
+  },
+  {
+    "IDCategory": 503,
+    "Name": "Circus",
+    "IDCategoryParent": 500
+  },
+  {
+    "IDCategory": 600,
+    "Name": "Workshop",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 601,
+    "Name": "Networking",
+    "IDCategoryParent": 600
+  },
+  {
+    "IDCategory": 602,
+    "Name": "Psychology",
+    "IDCategoryParent": 600
+  },
+  {
+    "IDCategory": 603,
+    "Name": "Seminary",
+    "IDCategoryParent": 600
+  },
+  {
+    "IDCategory": 604,
+    "Name": "Lecture",
+    "IDCategoryParent": 600
+  },
+  {
+    "IDCategory": 1,
+    "Name": "Food",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 2,
+    "Name": "Baking",
+    "IDCategoryParent": 1
+  },
+  {
+    "IDCategory": 3,
+    "Name": "Books",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 4,
+    "Name": "Computers",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 5,
+    "Name": "Esport",
+    "IDCategoryParent": 4
+  },
+  {
+    "IDCategory": 6,
+    "Name": "Tournament",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 7,
+    "Name": "Premium",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 8,
+    "Name": "Protest",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 9,
+    "Name": "Beach",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 10,
+    "Name": "Fishing",
+    "IDCategoryParent": 9
+  },
+  {
+    "IDCategory": 11,
+    "Name": "Cruise",
+    "IDCategoryParent": null
+  },
+  {
+    "IDCategory": 12,
+    "Name": "Standup",
+    "IDCategoryParent": null
+  }
+]
