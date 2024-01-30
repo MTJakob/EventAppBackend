@@ -1,7 +1,5 @@
-from flask_restful import abort
 from flask.views import MethodView
-from database import db, Event as EventTable
-from sqlalchemy.exc import SQLAlchemyError
+from database import Event as EventTable
 from flask_smorest import Blueprint
 from schemas.argumentSchemas import SearchPostSchema
 from schemas.responseSchemas import EventGetSchema

@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import fields
 from schemas.PlainSchemas import PlainEventSchema, PlainUserSchema, PlainCategorySchema, PlainAddressSchema
 
 

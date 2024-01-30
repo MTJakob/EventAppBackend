@@ -1,5 +1,4 @@
 from flask_restful import abort
-from flask import request
 from flask.views import MethodView
 from database import db, User, EventParticipant as EventParticipantTable, Event
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
@@ -7,7 +6,6 @@ from sqlalchemy import and_
 from flask_smorest import Blueprint, abort
 from schemas.argumentSchemas import EventParticipantPostSchema, EventParticipantDeleteSchema
 from schemas.responseSchemas import EventGetSchema
-from datetime import datetime
 
 blp = Blueprint("EventParticipant", __name__, description="Operations on event participants")
 
@@ -43,9 +41,9 @@ class EventParticipant(MethodView):
         event_participant = EventParticipantTable.query.one_or_404(
             and_(EventParticipantTable.IDEvent == user_data["IDEvent"],
                  EventParticipantTable.IDUser == int(user_id)))
-        #try:
-        db.session.delete(event_participant)
-        db.session.commit()
-        #except SQLAlchemyError:
-        #    abort(500, message="An error occurred while unsubscribing form the event.")
+        try:
+            db.session.delete(event_participant)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while unsubscribing form the event.")
         return {"message": "Participant successfully unsubscribed from the event."}, 202
