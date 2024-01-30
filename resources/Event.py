@@ -6,7 +6,6 @@ from flask_smorest import Blueprint, abort
 from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema
 from schemas.responseSchemas import EventGetSchema
 import json
-from addCategoryScript import add_categories_to_database
 
 blp = Blueprint("Event", __name__, description="Operations on events")
 
