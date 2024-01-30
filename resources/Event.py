@@ -87,7 +87,7 @@ class Event(MethodView):
 
     @blp.response(200, EventGetSchema(many=True))
     def get(self, user_id):
-        events = EventTable.query.filter_by(IDOrganiser=user_id).get_or_404()
+        events = EventTable.query.filter(EventTable.IDOrganiser == int(user_id))
         return events, 200
 
     @blp.arguments(EventDeleteSchema)
