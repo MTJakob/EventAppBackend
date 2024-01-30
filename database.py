@@ -61,8 +61,7 @@ class Event(db.Model):
     eventAddress = db.relationship('Address', back_populates='addressEvent', lazy=True)
     IDCategory = db.Column(db.Integer, db.ForeignKey(Category.IDCategory))
     eventCategory = db.relationship('Category',  back_populates='categoryEvent', lazy=True)
-    eventParticipantEventFrom = db.relationship('EventParticipant', back_populates='eventParticipantEventTo',
-                                                lazy=True, cascade="all, delete")
+    eventParticipantEventFrom = db.relationship('EventParticipant', back_populates='eventParticipantEventTo', lazy=True)
     permissionEvent = db.relationship('Permission', back_populates='eventPermission', lazy=True)
 
     def __repr__(self):
@@ -74,7 +73,8 @@ class EventParticipant(db.Model):
     IDUser = db.Column(db.Integer, db.ForeignKey(User.IDUser), primary_key=True, nullable=False)
     eventParticipantUser = db.relationship('User', back_populates='userEventParticipant', lazy=True)
     IDEvent = db.Column(db.Integer, db.ForeignKey(Event.IDEvent), primary_key=True, nullable=False)
-    eventParticipantEventTo = db.relationship('Event', back_populates='eventParticipantEventFrom', lazy=True)
+    eventParticipantEventTo = db.relationship('Event', back_populates='eventParticipantEventFrom',
+                                              lazy=True,  cascade="all, delete")
     Review = db.Column(db.Integer)
 
     def __repr__(self):
