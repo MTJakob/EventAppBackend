@@ -1,12 +1,10 @@
 from flask_restful import abort
 from flask.views import MethodView
-from database import db, User, Event as EventTable, Address, Category
+from database import db, Event as EventTable, Address, Category
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_smorest import Blueprint, abort
-from schemas.PlainSchemas import EventSchema
 from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema
 from schemas.responseSchemas import EventGetSchema
-from datetime import datetime
 
 blp = Blueprint("Event", __name__, description="Operations on events")
 
@@ -17,7 +15,8 @@ class Event(MethodView):
     @blp.arguments(EventPostSchema)
     def post(self, user_data, user_id):
 
-        #category = Category.query.filter(Category.Name == user_data["eventCategory"]["Name"])
+        category = Category.query.filter_by(Category.Name == user_data["eventCategory"]["Name"]).one_or_404()
+
         address = Address \
         (
         Longitude=user_data["eventAddress"]["Longitude"],
@@ -39,8 +38,8 @@ class Event(MethodView):
          EndDateTime=user_data["EndDateTime"],
          Capacity=user_data["Capacity"],
          IDOrganiser=user_id,
-         IDAddress=address.IDAddress#   ,
-         #IDCategory=category.IDCategory
+         IDAddress=address.IDAddress,
+         IDCategory=category.IDCategory
          )
 
         try:
@@ -55,28 +54,27 @@ class Event(MethodView):
 
     @blp.arguments(EventPutSchema)
     def put(self, user_data, user_id):
+
+        event = EventTable.query.filter(EventTable.IDEvent == user_data["IDEvent"]).one_or_404()
+
+        if event.IDOrganiser != int(user_id):
+            abort(403, message="Only organiser can alter the event")
+
         category = Category.query.filter(Category.Name == user_data["eventCategory"]["Name"])
 
-        address = Address \
-        (
-        Longitude=user_data["eventAddress"]["Longitude"],
-        Latitude=user_data["eventAddress"]["Latitude"]
-        )
+        event.Name = user_data["Name"]
+        event.Price = user_data["Price"]
+        event.StartDateTime = user_data["StartDateTime"]
+        event.EndDateTime = user_data["EndDateTime"]
+        event.Capacity = user_data["Capacity"]
+        event.IDCategory = category.IDCategory
 
-        IDAddress = address.IDAddress,
+        address = Address.query.filter(Address.IDAddress == event.IDAddress)
 
-        event = EventTable \
-        (Name=user_data["Name"],
-         Price=user_data["Price"],
-         StartDateTime=user_data["StartDateTime"],
-         EndDateTime=user_data["EndDateTime"],
-         Capacity=user_data["Capacity"],
-         IDOrganiser=user_id,
-         IDCategory=category.IDCategory
-         )
+        address.Longitude = user_data["eventAddress"]["Longitude"]
+        address.Latitude = user_data["eventAddress"]["Latitude"]
+
         try:
-            db.session.add(event)
-            db.session.flush()
             db.session.commit()
         except IntegrityError:
             abort(400, message="Submitted event cannot be updated due to lack of data integrity")
