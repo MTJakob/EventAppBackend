@@ -14,15 +14,15 @@ class User(MethodView):
 
     @blp.arguments(PlainUserSchema)
     def put(self, user_data, user_id):
-        user = UserTable.query.get_or_404(user_id)
-        user.Email = user_data["Email"],
-        user.Name = user_data["Name"],
-        user.Surname = user_data["Surname"],
-        user.DateOfBirth = user_data["DateOfBirth"]
-        #try:
-        db.session.commit()
-       # except SQLAlchemyError:
-       #     abort(500, message="An error occurred while updating user data.")
+        user_to_modify = UserTable.query.filter_by(IDUser=user_id).one_or_404()
+        user_to_modify.Name = user_data["Name"]
+        user_to_modify.Surname = user_data["Surname"]
+        user_to_modify.Email = user_data["Email"]
+        user_to_modify.DateOfBirth = user_data["DateOfBirth"]
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while updating user data.")
         return {"message": "User data updated successfully"}, 200
 
     @blp.response(200, PlainUserSchema)
