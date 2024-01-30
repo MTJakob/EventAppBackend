@@ -3,7 +3,7 @@ from flask.views import MethodView
 from database import db, Event as EventTable, Address, Category as CategoryTable
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_smorest import Blueprint, abort
-from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema
+from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema, SearchPostSchema
 from schemas.responseSchemas import EventGetSchema
 import json
 
@@ -135,3 +135,14 @@ class Category(MethodView):
 
         f.close()
         return "Categories are added to the database"
+
+
+@blp.route("/search")
+class Search(MethodView):
+
+    @blp.arguments(SearchPostSchema)
+    @blp.response(200, EventGetSchema(many=True))
+    def post(self, user_data):
+        search_word = "%{}%".format(user_data["SearchWord"])
+        events = EventTable.query.filter(EventTable.Name.like(search_word)).all()
+        return events, 200

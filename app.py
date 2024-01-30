@@ -7,7 +7,6 @@ from resources.User import blp as UserBlueprint
 from resources.EventParticipant import blp as EventParticipantBlueprint
 from resources.Login import blp as LoginBlueprint
 from resources.Register import blp as RegisterBlueprint
-from resources.Search import blp as SearchBlueprint
 import os
 
 
@@ -38,8 +37,6 @@ def create_app(db_url=None):
     api.register_blueprint(EventParticipantBlueprint)
     api.register_blueprint(LoginBlueprint)
     api.register_blueprint(RegisterBlueprint)
-    api.register_blueprint(SearchBlueprint)
-
     return app
 
 
