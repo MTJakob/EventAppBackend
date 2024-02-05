@@ -48,7 +48,7 @@ class Logout(MethodView):
     def post(self):
         jti = get_jwt()["jti"]
         BLOCKLIST.add(jti)
-        return {"message", "User successfully logged out"}, 200
+        return {"message": "User successfully logged out"}, 200
 
 
 @blp.route("/refresh")

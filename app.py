@@ -38,7 +38,7 @@ def create_app(db_url=None):
     def revoked_token_loader(jwt_header, jwt_payload):
         return (
             jsonify(
-                {"message" : "The token has been revoked"}
+                {"message": "The token has been revoked"}
             ), 401
         )
 
