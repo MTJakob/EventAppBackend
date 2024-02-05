@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from database import db
@@ -7,6 +7,7 @@ from resources.User import blp as UserBlueprint
 from resources.EventParticipant import blp as EventParticipantBlueprint
 from resources.Login import blp as LoginBlueprint
 from resources.Register import blp as RegisterBlueprint
+from blocklist import BLOCKLIST
 import os
 
 
@@ -28,6 +29,18 @@ def create_app(db_url=None):
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "test")
     # test on production is going to be str(secrets.SystemRandom().getrandbits(128))
     jwt = JWTManager(app)
+
+    @jwt.token_in_blocklist_loader
+    def check_if_token_in_blocklist(jwt_header, jwt_payload):
+        return jwt_payload["jti"] in BLOCKLIST  # jti JWT ID
+
+    @jwt.revoked_token_loader
+    def revoked_token_loader(jwt_header, jwt_payload):
+        return (
+            jsonify(
+                {"message" : "The token has been revoked"}
+            ), 401
+        )
 
     with app.app_context():
         db.create_all()
