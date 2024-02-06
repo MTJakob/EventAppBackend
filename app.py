@@ -4,7 +4,6 @@ from flask_jwt_extended import JWTManager
 from database import db
 from resources.Event import blp as EventBlueprint
 from resources.User import blp as UserBlueprint
-from resources.EventParticipant import blp as EventParticipantBlueprint
 from resources.Login import blp as LoginBlueprint
 from resources.Register import blp as RegisterBlueprint
 from blocklist import BLOCKLIST
@@ -42,7 +41,7 @@ def create_app(db_url=None):
             ), 401
         )
 
-    @jwt.expired_token_loader()
+    @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_payload):
         return (
             jsonify(
@@ -50,7 +49,7 @@ def create_app(db_url=None):
             ), 401
         )
 
-    @jwt.invalid_token_loader()
+    @jwt.invalid_token_loader
     def expired_token_callback(error):
         return (
             jsonify(
@@ -58,7 +57,7 @@ def create_app(db_url=None):
             ), 401
         )
 
-    @jwt.unauthorized_loader()
+    @jwt.unauthorized_loader
     def missing_token_callback(error):
         return (
             jsonify(
@@ -66,7 +65,7 @@ def create_app(db_url=None):
             ), 401
         )
 
-    @jwt.needs_fresh_token_loader()
+    @jwt.needs_fresh_token_loader
     def needs_fresh_token_callback(error):
         return (
             jsonify(
@@ -79,7 +78,6 @@ def create_app(db_url=None):
 
     api.register_blueprint(EventBlueprint)
     api.register_blueprint(UserBlueprint)
-    api.register_blueprint(EventParticipantBlueprint)
     api.register_blueprint(LoginBlueprint)
     api.register_blueprint(RegisterBlueprint)
     return app
