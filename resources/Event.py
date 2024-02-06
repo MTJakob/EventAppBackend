@@ -1,9 +1,11 @@
 from flask_restful import abort
 from flask.views import MethodView
-from database import db, Event as EventTable, Address, Category as CategoryTable
+from database import db, Event as EventTable, User, Address, Category as CategoryTable, \
+    EventParticipant as EventParticipantTable
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from flask_smorest import Blueprint, abort
-from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema, SearchPostSchema
+from schemas.argumentSchemas import EventPostSchema, EventDeleteSchema, EventPutSchema, SearchPostSchema,\
+    EventParticipantPostSchema, EventParticipantDeleteSchema
 from schemas.responseSchemas import EventGetSchema
 import json
 
@@ -146,3 +148,42 @@ class Search(MethodView):
         search_word = "%{}%".format(user_data["SearchWord"])
         events = EventTable.query.filter(EventTable.Name.like(search_word)).all()
         return events, 200
+
+
+@blp.route('/event participant/<string:user_id>')
+class EventParticipant(MethodView):
+
+    @blp.arguments(EventParticipantPostSchema)
+    def post(self, user_data, user_id):
+        Event.query.get_or_404(user_data["IDEvent"])
+        User.query.get_or_404(user_id)
+
+        event_participant = EventParticipantTable \
+        (IDUser=user_id,
+         IDEvent=user_data["IDEvent"]
+         )
+        try:
+            db.session.add(event_participant)
+            db.session.commit()
+        except IntegrityError:
+            abort(400, message="Submitted address cannot be added due to lack of data integrity")
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while inserting the address.")
+        return "EventParticipant has been successfully registered"
+
+    @blp.response(200, EventGetSchema(many=True))
+    def get(self, user_id):
+        events = Event.query.filter(EventParticipantTable.IDUser == int(user_id), Event.IDEvent == EventParticipantTable.IDEvent)
+        return events, 200
+
+    @blp.arguments(EventParticipantDeleteSchema)
+    def delete(self, user_data, user_id):
+        event_participant = EventParticipantTable.query.filter_by(IDEvent=user_data["IDEvent"],
+                 IDUser=int(user_id)).one_or_404()
+        try:
+            db.session.delete(event_participant)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="An error occurred while unsubscribing form the event.")
+        return {"message": "Participant successfully unsubscribed from the event."}, 202
+
