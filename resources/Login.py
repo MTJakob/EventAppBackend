@@ -56,7 +56,7 @@ class TokenRefresh(MethodView):
     @jwt_required(refresh=True)
     def post(self):
         id_user = get_jwt_identity()
-        access_token = create_access_token(identity=id_user)
+        access_token = create_access_token(identity=id_user, fresh=False)
         jti = get_jwt()["jti"]
         BLOCKLIST.add(jti)
         return {"access_token": access_token}, 200

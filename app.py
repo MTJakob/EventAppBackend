@@ -35,10 +35,42 @@ def create_app(db_url=None):
         return jwt_payload["jti"] in BLOCKLIST  # jti JWT ID
 
     @jwt.revoked_token_loader
-    def revoked_token_loader(jwt_header, jwt_payload):
+    def revoked_token_callback(jwt_header, jwt_payload):
         return (
             jsonify(
-                {"message": "The token has been revoked"}
+                {"message": "The token has been revoked."}
+            ), 401
+        )
+
+    @jwt.expired_token_loader()
+    def expired_token_callback(jwt_header, jwt_payload):
+        return (
+            jsonify(
+                {"message": "The token has expired."}
+            ), 401
+        )
+
+    @jwt.invalid_token_loader()
+    def expired_token_callback(error):
+        return (
+            jsonify(
+                {"message": "Verification of the token failed."}
+            ), 401
+        )
+
+    @jwt.unauthorized_loader()
+    def missing_token_callback(error):
+        return (
+            jsonify(
+                {"message": "No token is supplied with the request."}
+            ), 401
+        )
+
+    @jwt.needs_fresh_token_loader()
+    def needs_fresh_token_callback(error):
+        return (
+            jsonify(
+                {"message": "Token is not fresh, for ths endpoint you have to supply fresh token."}
             ), 401
         )
 
