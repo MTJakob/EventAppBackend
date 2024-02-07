@@ -155,7 +155,7 @@ class EventParticipant(MethodView):
 
     @blp.arguments(EventParticipantPostSchema)
     def post(self, user_data, user_id):
-        Event.query.get_or_404(user_data["IDEvent"])
+        EventTable.query.get_or_404(user_data["IDEvent"])
         User.query.get_or_404(user_id)
 
         event_participant = EventParticipantTable \
@@ -173,7 +173,7 @@ class EventParticipant(MethodView):
 
     @blp.response(200, EventGetSchema(many=True))
     def get(self, user_id):
-        events = Event.query.filter(EventParticipantTable.IDUser == int(user_id), Event.IDEvent == EventParticipantTable.IDEvent)
+        events = EventTable.query.filter(EventParticipantTable.IDUser == int(user_id), EventTable.IDEvent == EventParticipantTable.IDEvent)
         return events, 200
 
     @blp.arguments(EventParticipantDeleteSchema)
